@@ -1,55 +1,39 @@
 const form = document.querySelector('form');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
-const rememberInput = document.getElementById('checkbox');
-const submitButton = document.getElementById('submit');
+const rememberCheckbox = document.getElementById('checkbox');
 const existingButton = document.getElementById('existing');
 
-// Check if there are saved details
+// On page load, check if there are stored login details
 if (localStorage.getItem('username') && localStorage.getItem('password')) {
-  existingButton.style.display = 'block';
+  // Populate the input fields with the stored login details
+
+  // Show the "Login as existing user" button
+	existingButton.style.visibility = "visible"
 }
 
-// Show alert message
-function showAlert(username) {
-  alert(`Logged in as ${username}`);
-}
 
-// Save details to local storage
-function saveDetails() {
-  localStorage.setItem('username', usernameInput.value);
-  localStorage.setItem('password', passwordInput.value);
-}
+// Add an event listener to the form on submit
+form.addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent the form from submitting
 
-// Remove details from local storage
-function removeDetails() {
-  localStorage.removeItem('username');
-  localStorage.removeItem('password');
-}
-
-// Check if remember me is checked
-function rememberMe() {
-  if (rememberInput.checked) {
-    saveDetails();
-  } else {
-    removeDetails();
-  }
-}
-
-// Submit form
-function submitForm(event) {
-  event.preventDefault();
   const username = usernameInput.value;
-  showAlert(username);
-  rememberMe();
-}
+  const password = passwordInput.value;
 
-// Login as existing user
-function loginExisting() {
-  const username = localStorage.getItem('username');
-  showAlert(username);
-}
+  // Check if the "remember me" checkbox is checked
+  if (rememberCheckbox.checked) {
+    // Store the username and password in local storage
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
+  } else {
+    // Remove the stored username and password from local storage
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+  }
 
-// Event listeners
-submitButton.addEventListener('click', submitForm);
-existingButton.addEventListener('click', loginExisting);
+  // TODO: Add your login logic here
+	alert(`Logged in as ${usernameInput.value}`)
+
+  // Show the "Login as existing user" button
+	existingButton.style.display = "block"
+});
